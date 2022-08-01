@@ -1,0 +1,2 @@
+# lotto
+Console game
