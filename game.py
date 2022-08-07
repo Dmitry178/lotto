@@ -10,15 +10,19 @@ class Lotto:
         self._bag = bag.Bag()  # мешок с бочонками
         self._all_comp = True  # указывает, все ли игроки - компьютер
 
-    def _set_num_players(self):
+    def _set_num_players(self, default=2):
         """
         ввод числа игроков
+        :param default: число игроков по умолчанию
         :return:
         """
 
         while True:
             try:
-                players = int(input('Выберите число игроков от 2 до 8 (0 - выход): '))
+                if not default:
+                    players = int(input('Выберите число игроков от 2 до 8 (0 - выход): '))
+                else:
+                    players = default
                 if not players or 1 < players < 9:
                     break
             except:
@@ -27,9 +31,10 @@ class Lotto:
         self._num_players = players
         self._tot_players = players
 
-    def _set_players_name(self):
+    def _set_players_name(self, default=False):
         """
         ввод имён игроков (не проверяются повторения имён)
+        :param default: True, если имена игроков по умолчанию
         :return:
         """
 
@@ -37,9 +42,15 @@ class Lotto:
             return
 
         comp_idx = 1
-        print('\nВведите имена игроков (без имени - компьютер): ')
+        if not default:
+            print('\nВведите имена игроков (без имени - компьютер): ')
+
         for i in range(self._num_players):
-            name = input(f'Игрок {i + 1}: ')
+            if not default:
+                name = input(f'Игрок {i + 1}: ')
+            else:
+                name = ''
+
             is_comp = not name
 
             if not name:
@@ -50,6 +61,8 @@ class Lotto:
 
             self._players.append(player.Player(name, is_comp))
 
+        return True
+
     def _next_turn(self) -> bool:
         barrel = self._bag.get_barrel()
         num_barrels = self._bag.barrels_left()
@@ -58,7 +71,8 @@ class Lotto:
         for pl in self._players:
             if pl.loose:  # пропускаем проигравшего игрока
                 continue
-            pl.show_card()  # выводим карточку игрока
+            for item in pl.show_card():  # выводим карточку игрока
+                print(item)
 
         for pl in self._players:
 
@@ -97,10 +111,10 @@ class Lotto:
                         print(f'Игрок {p.name} выйграл!')
                         return False
 
-        input('Ход сделан, нажмите ENTER для продолжения')
-
         if not num_barrels:
             return False
+
+        input('Ход сделан, нажмите ENTER для продолжения')
 
         return True
 

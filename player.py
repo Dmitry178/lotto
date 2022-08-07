@@ -10,16 +10,15 @@ class Player:
 
     def show_card(self):
         """
-        выводит карточку игрока
+        генерирует карточку игрока для вывода на экран
         :return:
         """
-        print('┌── ' + self.name + ' ' + '─' * (32 - len(self.name)) + '┐')
+        result = list()
+        result.append('┌── ' + self.name + ' ' + '─' * (32 - len(self.name)) + '┐')
         for i in self.card.get_card():
-            print('│ ' + ''.join(i) + ' │')
-        print('└' + '─' * 36 + '┘')
-        # print(list(item for item in self.card[1]))
-        # for i in self.card.card:
-        #     print(i)
+            result.append('│ ' + ''.join(i) + ' │')
+        result.append('└' + '─' * 36 + '┘')
+        return result
 
     def check_barrel(self, barrel) -> bool:
         """
