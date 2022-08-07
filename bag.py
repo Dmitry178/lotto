@@ -5,6 +5,20 @@ class Bag:
     def __init__(self):
         self._bag = list(range(1, 91))  # доступные номера в мешке
 
+    def __len__(self):
+        return len(self._bag)
+
+    def __str__(self):
+        return ', '.join([str(item) for item in self._bag])
+
+    def __eq__(self, other):
+        """
+        сравнивается размер мешка, но не его содержимое
+        :param other:
+        :return:
+        """
+        return len(self) == len(other)
+
     def get_barrel(self) -> int:
         """
         достаём номер из мешка
@@ -17,6 +31,3 @@ class Bag:
         self._bag.remove(num[0])
 
         return num[0]
-
-    def barrels_left(self) -> int:
-        return len(self._bag)

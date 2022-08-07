@@ -8,6 +8,29 @@ class Player:
         self.card = card.Card()  # карточка игрока
         self.loose = False       # флаг проигрыша игрока
 
+    def __str__(self):
+        return 'Игрок: ' + self.name + ', незакрытых номеров: ' + str(self.card.__len__()) \
+               + ', компьютер' if self.is_comp else '' + ', проиграл' if self.loose else ''
+
+    def __len__(self):
+        return self.card.__len__()
+
+    def __eq__(self, other):
+        """
+        сравнивается игроки по количеству оставшихся номеров
+        :param other:
+        :return:
+        """
+        return len(self) == len(other)
+
+    def __gt__(self, other):
+        """
+        сравнивается количество оставшихся номеров, чем меньше номеров, тем игрок "больше"
+        :param other:
+        :return:
+        """
+        return len(self) < len(other)
+
     def show_card(self):
         """
         генерирует карточку игрока для вывода на экран

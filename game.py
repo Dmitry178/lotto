@@ -10,6 +10,24 @@ class Lotto:
         self._bag = bag.Bag()  # мешок с бочонками
         self._all_comp = True  # указывает, все ли игроки - компьютер
 
+    def __str__(self):
+        return 'Игроков: ' + str(len(self._players)) + ', осталось бочонков: ' + str(len(self._bag))
+
+    def __len__(self):
+        """
+        длина класса будет означать количество оставшихся бочонков
+        :return:
+        """
+        return len(self._bag)
+
+    def __eq__(self, other):
+        """
+        этот класс сравнивается по количеству оставшихся бочонков
+        :param other:
+        :return:
+        """
+        return len(self) == len(other)
+
     def _set_num_players(self, default=2):
         """
         ввод числа игроков
@@ -65,9 +83,12 @@ class Lotto:
 
     def _next_turn(self) -> bool:
         barrel = self._bag.get_barrel()
-        num_barrels = self._bag.barrels_left()
-        print()
-        print(f'Новый бочонок: {barrel}, осталось: {num_barrels}')
+        num_barrels = len(self._bag)
+
+        if num_barrels:
+            print()
+            print(f'Новый бочонок: {barrel}, осталось: {num_barrels}')
+
         for pl in self._players:
             if pl.loose:  # пропускаем проигравшего игрока
                 continue
@@ -101,7 +122,7 @@ class Lotto:
                 if pl.check_barrel(barrel):  # если игрок - компьютер
                     print(f'Игрок {pl.name} зачеркнул цифру {barrel}')
 
-            if not pl.card.num_left():  # если закрыта вся карточка
+            if not len(pl.card):  # если закрыта вся карточка
                 print(f'Игрок {pl.name} выйграл!')
                 return False
 
@@ -124,7 +145,7 @@ class Lotto:
         :return:
         """
         print('\nИгра Лото')
-        self._set_num_players()
+        self._set_num_players(0)
         if not self._num_players:
             return
 

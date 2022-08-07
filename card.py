@@ -6,7 +6,27 @@ class Card:
         self._card = []
         self._generate_card()
         self._num_left = 15  # количество незакрытых номеров
-        # self.card = self._card
+
+    def __str__(self):
+        result = []
+        for i in self._card:
+            result += i
+        return ', '.join([str(item) for item in sorted(result) if item != 0])
+
+    def __len__(self):
+        """
+        количество оставшихся незакрытых номеров
+        :return:
+        """
+        return self._num_left
+
+    def __eq__(self, other):
+        """
+        сравнение карточки по количеству незакрытых номеров
+        :param other:
+        :return:
+        """
+        return len(self) == len(other)
 
     def _generate_card(self):
         """
@@ -60,10 +80,3 @@ class Card:
                 result = True
 
         return result
-
-    def num_left(self) -> int:
-        """
-        возвращает количество оставшихся незакрытых номеров
-        :return:
-        """
-        return self._num_left
